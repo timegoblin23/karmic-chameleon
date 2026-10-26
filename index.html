@@ -1,0 +1,547 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Karmic Chameleon — October Review</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    color-scheme: light;
+    --paper:#fbf9f5;
+    --card:#ffffff;
+    --ink:#191713;
+    --ink-2:#5f5a51;
+    --ink-3:#8a8378;
+    --rule:#e6e0d6;
+    --rule-soft:#f0ebe3;
+    --accent:#8a4b2f;
+    --accent-soft:#f3e8df;
+    --series-1:#2a78d6;
+    --series-2:#eb6834;
+    --good:#0b7a3b;
+    --bad:#b23a2f;
+    --chart-grid:#e9e4db;
+    --tooltip-bg:#191713;
+    --tooltip-ink:#fbf9f5;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:where(:not([data-theme="light"])){
+      color-scheme: dark;
+      --paper:#171614;
+      --card:#1f1d1a;
+      --ink:#f4f0e9;
+      --ink-2:#c2bbae;
+      --ink-3:#8f887c;
+      --rule:#35322c;
+      --rule-soft:#2a2723;
+      --accent:#d69b78;
+      --accent-soft:#332620;
+      --series-1:#3987e5;
+      --series-2:#d95926;
+      --good:#57c785;
+      --bad:#ef7d6f;
+      --chart-grid:#332f29;
+      --tooltip-bg:#f4f0e9;
+      --tooltip-ink:#171614;
+    }
+  }
+  :root[data-theme="dark"]{
+    color-scheme: dark;
+    --paper:#171614;
+    --card:#1f1d1a;
+    --ink:#f4f0e9;
+    --ink-2:#c2bbae;
+    --ink-3:#8f887c;
+    --rule:#35322c;
+    --rule-soft:#2a2723;
+    --accent:#d69b78;
+    --accent-soft:#332620;
+    --series-1:#3987e5;
+    --series-2:#d95926;
+    --good:#57c785;
+    --bad:#ef7d6f;
+    --chart-grid:#332f29;
+    --tooltip-bg:#f4f0e9;
+    --tooltip-ink:#171614;
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    font-size:16px;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:980px;margin:0 auto;padding:56px 28px 72px}
+  @media (max-width:640px){ .wrap{padding:32px 16px 48px} }
+
+  .topbar{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:56px}
+  .brand{display:flex;align-items:center;gap:12px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3)}
+  .brand .mark{width:22px;height:22px;border:1px solid var(--ink-3);border-radius:50%;display:grid;place-items:center;font-size:10px;letter-spacing:0}
+  .theme-btn{
+    appearance:none;background:transparent;border:1px solid var(--rule);color:var(--ink-2);
+    font:inherit;font-size:12px;letter-spacing:.06em;padding:6px 12px;border-radius:999px;cursor:pointer;
+  }
+  .theme-btn:hover{border-color:var(--ink-3);color:var(--ink)}
+
+  .eyebrow{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin-bottom:18px}
+  h1{
+    font-family:Fraunces,Georgia,serif;font-weight:400;font-size:clamp(34px,5.4vw,54px);
+    line-height:1.05;letter-spacing:-.015em;margin:0 0 20px;max-width:16ch;
+  }
+  .standfirst{font-size:clamp(17px,2.2vw,20px);line-height:1.55;color:var(--ink-2);max-width:64ch;margin:0 0 40px}
+  .standfirst strong{color:var(--ink);font-weight:600}
+
+  .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);margin-bottom:64px}
+  .kpi{padding:22px 18px 22px 0;border-right:1px solid var(--rule-soft)}
+  .kpi:last-child{border-right:0;padding-right:0}
+  .kpi .label{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin-bottom:8px}
+  .kpi .value{font-family:Fraunces,Georgia,serif;font-size:clamp(26px,3.4vw,34px);line-height:1;letter-spacing:-.01em}
+  .kpi .delta{font-size:12.5px;color:var(--ink-2);margin-top:8px;line-height:1.35}
+  .kpi .delta .up{color:var(--good);font-weight:600}
+  .kpi .delta .down{color:var(--bad);font-weight:600}
+  @media (max-width:760px){
+    .kpis{grid-template-columns:repeat(2,1fr)}
+    .kpi:nth-child(2){border-right:0}
+    .kpi:nth-child(-n+2){border-bottom:1px solid var(--rule-soft)}
+  }
+
+  section{margin-bottom:56px}
+  .sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:14px}
+  .sec-num{font-size:11px;letter-spacing:.12em;color:var(--accent);padding-top:6px}
+  h2{font-family:Fraunces,Georgia,serif;font-weight:400;font-size:clamp(24px,3.2vw,31px);line-height:1.2;letter-spacing:-.01em;margin:0}
+  .lede{font-size:16.5px;color:var(--ink-2);max-width:66ch;margin:0 0 22px}
+  .lede strong{color:var(--ink);font-weight:600}
+  p{margin:0 0 14px}
+
+  .bullets{list-style:none;padding:0;margin:0;display:grid;gap:12px;max-width:70ch}
+  .bullets li{position:relative;padding-left:22px;color:var(--ink-2)}
+  .bullets li::before{content:"";position:absolute;left:0;top:.62em;width:7px;height:7px;border-radius:50%;background:var(--accent)}
+  .bullets strong{color:var(--ink);font-weight:600}
+
+  .card{background:var(--card);border:1px solid var(--rule);border-radius:14px;padding:26px 26px 18px}
+  .card-head{display:flex;justify-content:space-between;align-items:baseline;gap:18px;margin-bottom:4px}
+  .card-title{font-size:15px;font-weight:600;letter-spacing:-.005em}
+  .card-note{font-size:12px;color:var(--ink-3);text-align:right}
+  .legend{display:flex;gap:18px;flex-wrap:wrap;margin:10px 0 0;font-size:12px;color:var(--ink-2)}
+  .legend span{display:inline-flex;align-items:center;gap:7px}
+  .swatch{width:10px;height:10px;border-radius:3px;display:inline-block}
+  .swatch.line{height:2px;width:16px;border-radius:2px}
+
+  .chart{position:relative;margin-top:14px}
+  .chart svg{display:block;width:100%;height:auto;overflow:visible}
+  .tooltip{
+    position:absolute;pointer-events:none;background:var(--tooltip-bg);color:var(--tooltip-ink);
+    font-size:12px;line-height:1.45;padding:8px 10px;border-radius:8px;opacity:0;transform:translate(-50%,-120%);
+    transition:opacity .12s ease;white-space:nowrap;z-index:5;max-width:240px;
+  }
+  .tooltip.show{opacity:1}
+  .tooltip b{font-weight:600}
+
+  .readout{font-size:13.5px;color:var(--ink-2);margin:14px 0 2px;padding-top:12px;border-top:1px solid var(--rule-soft)}
+  .readout strong{color:var(--ink);font-weight:600}
+
+  table{width:100%;border-collapse:collapse;font-size:14px;margin-top:6px}
+  th{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);font-weight:500;text-align:right;padding:0 0 10px}
+  th:first-child,td:first-child{text-align:left}
+  td{padding:11px 0;border-top:1px solid var(--rule-soft);text-align:right;font-variant-numeric:tabular-nums}
+  td:first-child{color:var(--ink-2)}
+  tr.hi td{color:var(--ink);font-weight:600}
+  tr.hi td:first-child{color:var(--ink)}
+
+  details{margin-top:18px;border-top:1px solid var(--rule-soft);padding-top:12px}
+  summary{cursor:pointer;font-size:12.5px;color:var(--ink-3);letter-spacing:.04em}
+  summary:hover{color:var(--ink-2)}
+  details table{margin-top:12px;font-size:13px}
+  .table-scroll{overflow-x:auto}
+
+  .decision{background:var(--accent-soft);border:1px solid var(--rule);border-radius:16px;padding:30px}
+  .decision h2{margin-bottom:8px}
+  .decision .lede{margin-bottom:22px}
+  .moves{list-style:none;padding:0;margin:0 0 24px;display:grid;gap:18px}
+  .moves li{display:grid;grid-template-columns:26px 1fr;gap:14px}
+  .moves .n{width:26px;height:26px;border-radius:50%;border:1px solid var(--accent);color:var(--accent);display:grid;place-items:center;font-size:12px;margin-top:2px}
+  .moves .t{font-weight:600;font-size:15px;margin-bottom:2px}
+  .moves .d{font-size:14px;color:var(--ink-2);line-height:1.5}
+  .target{display:flex;justify-content:space-between;align-items:center;gap:18px;border-top:1px solid var(--rule);padding-top:20px}
+  .target .k{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin-bottom:4px}
+  .target .v{font-family:Fraunces,Georgia,serif;font-size:24px}
+  .target .sub{font-size:12.5px;color:var(--ink-2);text-align:right;max-width:34ch}
+
+  .closing{font-size:14px;color:var(--ink-2);border-top:1px solid var(--rule);padding-top:22px;margin-top:56px}
+  .closing strong{color:var(--ink);font-weight:600}
+  .foot{font-size:11.5px;color:var(--ink-3);line-height:1.7;margin-top:18px}
+  .foot a{color:inherit}
+  @media (max-width:640px){
+    .target{flex-direction:column;align-items:flex-start}
+    .target .sub{text-align:left}
+    .decision{padding:22px}
+    .card{padding:20px 16px 14px}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="topbar">
+    <div class="brand"><span class="mark">TKC</span><span>The Karmic Chameleon · Performance review</span></div>
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="Switch colour theme">Dark</button>
+  </div>
+
+  <div class="eyebrow">October 2026 · Meta, Google and store</div>
+  <h1>The ads got better. The spend got smaller.</h1>
+  <p class="standfirst">
+    October delivered <strong>£9,929</strong> on <strong>£1,490</strong> of ad spend. Revenue is 51% below June
+    because investment is 59% below June — not because Meta stopped working. Measured against last October,
+    the store is <strong>up 42%</strong> and profit is <strong>up 62%</strong>.
+  </p>
+
+  <div class="kpis">
+    <div class="kpi">
+      <div class="label">Store revenue · 1–25 Oct</div>
+      <div class="value">£9,929</div>
+      <div class="delta"><span class="up">+42%</span> vs Oct 2025<br><span class="down">−51%</span> vs June</div>
+    </div>
+    <div class="kpi">
+      <div class="label">Meta ROAS</div>
+      <div class="value">6.52</div>
+      <div class="delta"><span class="up">+49%</span> vs June's 4.36<br>Oct 2025 was 1.34</div>
+    </div>
+    <div class="kpi">
+      <div class="label">Meta revenue</div>
+      <div class="value">£5,017</div>
+      <div class="delta">from £770 spend<br>50% of store revenue</div>
+    </div>
+    <div class="kpi">
+      <div class="label">Net profit · 1–25 Oct</div>
+      <div class="value">£6,770</div>
+      <div class="delta"><span class="up">+62%</span> vs Oct 2025<br>68% net margin</div>
+    </div>
+  </div>
+
+  <section>
+    <div class="sec-head"><div class="sec-num">01</div><h2>The short answer</h2></div>
+    <ul class="bullets">
+      <li><strong>Meta is the strongest it has been.</strong> On £770 it returned £5,017 at 6.52 ROAS — 4.9× the return on almost the same spend last October, and better than any month this year.</li>
+      <li><strong>The gap to June is investment and mix, not performance.</strong> Blended spend fell from £3,608 to £1,490. Google accounts for £5,101 of the revenue gap, Meta £3,560 and email £684.</li>
+      <li><strong>October is not deteriorating.</strong> Revenue per day is £397, ahead of September's £374. The month is tracking to roughly £12,300.</li>
+    </ul>
+  </section>
+
+  <section>
+    <div class="sec-head"><div class="sec-num">02</div><h2>Revenue has tracked spend all year</h2></div>
+    <p class="lede">June was the peak of investment as well as revenue: £20,279 on £3,608 of spend. As budget came out through the summer, revenue followed — but return rose. Blended ROAS went from 6.05 in June to 7.39 in September and 7.03 in October.</p>
+
+    <div class="card">
+      <div class="card-head">
+        <div class="card-title">Store revenue and blended ad spend, May–October</div>
+        <div class="card-note">GBP · October covers 1–25</div>
+      </div>
+      <div class="legend">
+        <span><i class="swatch line" style="background:var(--series-1)"></i>Store revenue</span>
+        <span><i class="swatch" style="background:var(--series-2)"></i>Blended ad spend</span>
+      </div>
+      <div class="chart" id="chartA"></div>
+      <div class="readout">October is a 25-day month. On a per-day basis it is <strong>6% ahead of September</strong>; at the current rate the full month lands near <strong>£12,300</strong>.</div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><div class="sec-num">03</div><h2>Where the sales went</h2></div>
+    <p class="lede">Change in attributed revenue by channel, June to October. Paid media accounts for <strong>84% of the £10,350 gap</strong>; with email, the three channels explain 90%. Email is the largest proportional fall — and the cheapest to fix.</p>
+
+    <div class="card">
+      <div class="card-head">
+        <div class="card-title">Change in attributed revenue, June → October</div>
+        <div class="card-note">GBP · Triple Whale attribution</div>
+      </div>
+      <div class="chart" id="chartB"></div>
+      <div class="readout">Google fell <strong>£5,101</strong> as its budget was cut 55%; Meta fell <strong>£3,560</strong> on 61% less spend. Organic and social were the only channel to grow, <strong>+14%</strong>.</div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><div class="sec-num">04</div><h2>Why June was the peak</h2></div>
+    <ul class="bullets">
+      <li><strong>It was the last full-funnel month.</strong> Meta £1,966 plus Google £1,642 — £3,608 invested, 2.4× October's £1,490.</li>
+      <li><strong>Google was doing as much work as Meta.</strong> It returned £8,586 at 5.23 ROAS in June; it now runs at 45% of that spend and returned £3,485.</li>
+      <li><strong>Email added £1,069.</strong> It added £385 in October — a 64% fall and the biggest proportional decline in the account.</li>
+      <li><strong>The hero product was in stock and the creative was varied.</strong> Multiple campaigns and batches were live. Today a single catalogue ad at £30/day carries the whole account.</li>
+      <li><strong>The year-on-year comparison flatters June.</strong> It is measured against a much smaller base. October 2025 is the fairer like-for-like, and this October is 42% ahead of it.</li>
+    </ul>
+  </section>
+
+  <section>
+    <div class="sec-head"><div class="sec-num">05</div><h2>Meta, line by line</h2></div>
+    <p class="lede">Same spend as last October. <strong>4.6× the revenue.</strong> Against June, orders are down 50% on 61% less spend — while ROAS, AOV and conversion rate are all higher. The whole month is being carried by one ad: Catalogue Ad 2026 at £30/day.</p>
+    <div class="card">
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr><th>Metric</th><th>June 2026</th><th>October 2026</th><th>October 2025</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Spend</td><td>£1,966</td><td>£770</td><td>£804</td></tr>
+            <tr class="hi"><td>Revenue</td><td>£8,576</td><td>£5,017</td><td>£1,080</td></tr>
+            <tr><td>Orders</td><td>237</td><td>119</td><td>36</td></tr>
+            <tr class="hi"><td>ROAS</td><td>4.36</td><td>6.52</td><td>1.34</td></tr>
+            <tr><td>Average order value</td><td>£36.19</td><td>£42.16</td><td>£30.01</td></tr>
+            <tr><td>Conversion rate</td><td>2.70%</td><td>2.85%</td><td>1.45%</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <details>
+        <summary>See the full monthly series</summary>
+        <div class="table-scroll">
+          <table>
+            <thead><tr><th>Month</th><th>Store sales</th><th>Blended spend</th><th>Blended ROAS</th><th>Meta spend</th><th>Meta revenue</th><th>Meta ROAS</th></tr></thead>
+            <tbody id="seriesBody"></tbody>
+          </table>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <section class="decision">
+    <div class="sec-head"><div class="sec-num">06</div><h2>The decision</h2></div>
+    <p class="lede">Stopping now would remove the channel producing half of store revenue at the best return we have recorded. The better move is to give it something to scale.</p>
+    <ol class="moves">
+      <li>
+        <div class="n">1</div>
+        <div><div class="t">Approve the £20/day test</div><div class="d">Three new angles alongside the catalogue ad, run for two weeks against it. This is the smallest version of the refresh — and the one already waiting on approval.</div></div>
+      </li>
+      <li>
+        <div class="n">2</div>
+        <div><div class="t">Put Google back to work</div><div class="d">Restore £1,200–1,600 a month at a 4× ROAS floor. It returned 4.71 on £739 in October and 5.23 in June; the demand is there, the budget is not.</div></div>
+      </li>
+      <li>
+        <div class="n">3</div>
+        <div><div class="t">Rebuild the email cadence</div><div class="d">Get back to June's rhythm. Even half of June's £1,069 is about £500 a month at no media cost — the highest-margin revenue available.</div></div>
+      </li>
+    </ol>
+    <div class="target">
+      <div><div class="k">November target</div><div class="v">£13,500+ at 6.0+ blended ROAS</div></div>
+      <div class="sub">About 10% above October's run-rate, on no more than £2,200 blended spend.</div>
+    </div>
+  </section>
+
+  <p class="closing">
+    <strong>If you want to go deeper,</strong> ask about the June launch cohort and repeat rate, the Google campaign structure,
+    or how out-of-stock products change what the catalogue ad can serve.
+  </p>
+
+  <div class="foot">
+    Prepared 26 October 2026. Figures in GBP.<br>
+    Sources: Meta Ads Manager (account 14020133), Triple Whale Summary and Attribution dashboards, Shopify Analytics. *October covers 1–25 October; full-month figures are run-rate estimates.
+  </div>
+</div>
+
+<script>
+const DATA = {"client":{"name":"The Karmic Chameleon","ad_account_id":"14020133","store":"karmicchameleon.myshopify.com","currency":"GBP"},"periods":{"current":{"label":"1\u201325 October 2026","start":"2026-10-01","end":"2026-10-25","days":25},"comparison":{"label":"June 2026","start":"2026-06-01","end":"2026-06-30","days":30},"last_year":{"label":"October 2025","start":"2025-10-01","end":"2025-10-31","days":31}},"store_monthly":[{"month":"2025-10","label":"Oct 25","sales":7013,"spend":1662,"roas":4.35,"profit":4182,"days":31},{"month":"2026-05","label":"May","sales":18912,"spend":3465,"roas":5.46,"profit":11917,"days":31},{"month":"2026-06","label":"Jun","sales":20279,"spend":3608,"roas":6.05,"profit":12913,"days":30},{"month":"2026-07","label":"Jul","sales":17210,"spend":3025,"roas":6.12,"profit":11068,"days":31},{"month":"2026-08","label":"Aug","sales":14093,"spend":2837,"roas":5.46,"profit":8740,"days":31},{"month":"2026-09","label":"Sep","sales":11220,"spend":1599,"roas":7.39,"profit":7567,"days":30},{"month":"2026-10","label":"Oct 26*","sales":9929,"spend":1490,"roas":7.03,"profit":6770,"days":25}],"meta_monthly":[{"month":"2025-10","label":"Oct 25","spend":803.91,"orders":36,"revenue":1080.37,"roas":1.34,"aov":30.01,"cvr":1.45},{"month":"2026-01","label":"Jan","spend":241.96,"orders":36,"revenue":1328.18,"roas":5.49,"aov":36.89,"cvr":2.52},{"month":"2026-02","label":"Feb","spend":34.26,"orders":0,"revenue":0,"roas":null,"aov":null,"cvr":null},{"month":"2026-03","label":"Mar","spend":1042.63,"orders":96,"revenue":3610.98,"roas":3.46,"aov":37.61,"cvr":1.89},{"month":"2026-04","label":"Apr","spend":1942.21,"orders":196,"revenue":7925.93,"roas":4.08,"aov":40.44,"cvr":2.32},{"month":"2026-05","label":"May","spend":1929.14,"orders":236,"revenue":8906.5,"roas":4.62,"aov":37.74,"cvr":2.87},{"month":"2026-06","label":"Jun","spend":1965.68,"orders":237,"revenue":8576.49,"roas":4.36,"aov":36.19,"cvr":2.7},{"month":"2026-07","label":"Jul","spend":2071.98,"orders":193,"revenue":6855.6,"roas":3.31,"aov":35.52,"cvr":2.32},{"month":"2026-08","label":"Aug","spend":1994.26,"orders":139,"revenue":5523.49,"roas":2.77,"aov":39.74,"cvr":2.01},{"month":"2026-09","label":"Sep","spend":920.03,"orders":106,"revenue":4982.07,"roas":5.42,"aov":47.0,"cvr":3.08},{"month":"2026-10","label":"Oct 26*","spend":769.88,"orders":119,"revenue":5016.71,"roas":6.52,"aov":42.16,"cvr":2.85}],"channels":[{"name":"Google Ads","june":8585.71,"oct":3484.67,"spend_june":1641.99,"spend_oct":739.2,"roas_june":5.23,"roas_oct":4.71},{"name":"Meta","june":8576.49,"oct":5016.71,"spend_june":1965.67,"spend_oct":750.35,"roas_june":4.36,"roas_oct":6.69},{"name":"Email","june":1068.59,"oct":385.0,"spend_june":null,"spend_oct":null,"roas_june":null,"roas_oct":null},{"name":"Non-attributed","june":659.3,"oct":490.03,"spend_june":null,"spend_oct":null,"roas_june":null,"roas_oct":null},{"name":"Direct","june":909.34,"oct":800.7,"spend_june":null,"spend_oct":null,"roas_june":null,"roas_oct":null},{"name":"Organic & social","june":2315.44,"oct":2644.58,"spend_june":null,"spend_oct":null,"roas_june":null,"roas_oct":null}],"current_meta":{"spend":769.88,"orders":119,"revenue":5016.71,"roas":6.52,"aov":42.16,"cvr":2.85,"impressions":134866,"reach":40838,"share_of_store":0.505,"ads_delivering":1,"campaigns_delivering":1,"daily_budget":30.0},"june_meta":{"spend":1965.68,"orders":237,"revenue":8576.49,"roas":4.36,"aov":36.19,"cvr":2.7,"campaigns_delivering":2},"last_year_meta":{"spend":803.91,"orders":36,"revenue":1080.37,"roas":1.34,"aov":30.01,"cvr":1.45},"store_current":{"sales":9929,"spend":1490,"roas":7.03,"profit":6770,"margin":0.682},"store_june":{"sales":20279,"spend":3608,"roas":6.05,"profit":12913,"margin":0.637},"store_last_year":{"sales":7013,"spend":1662,"roas":4.35,"profit":4182,"margin":0.596},"sources":["Meta Ads Manager \u2014 account 14020133, campaign and ad level, GBP, 1 Jan 2025 \u2013 26 Oct 2026","Triple Whale \u2014 Summary and Attribution dashboards, shop karmicchameleon.myshopify.com","Shopify Analytics \u2014 store references for October 2025 baseline"],"generated":"2026-10-26"};
+</script>
+<script>
+(function(){
+  const S = DATA;
+  const money = (n, dp=0) => "£" + Number(n).toLocaleString("en-GB",{minimumFractionDigits:dp, maximumFractionDigits:dp});
+  const pct = (n, dp=0) => (n>0?"+":"") + n.toFixed(dp) + "%";
+  const NS = "http://www.w3.org/2000/svg";
+  const el = (name, attrs) => {
+    const e = document.createElementNS(NS, name);
+    for (const k in attrs) e.setAttribute(k, attrs[k]);
+    return e;
+  };
+  const css = (v) => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+
+  // Theme toggle
+  const btn = document.getElementById("themeBtn");
+  const root = document.documentElement;
+  const syncBtn = () => {
+    const dark = root.getAttribute("data-theme") === "dark" ||
+      (!root.getAttribute("data-theme") && matchMedia("(prefers-color-scheme: dark)").matches);
+    btn.textContent = dark ? "Light" : "Dark";
+  };
+  btn.addEventListener("click", () => {
+    const dark = root.getAttribute("data-theme") === "dark" ||
+      (!root.getAttribute("data-theme") && matchMedia("(prefers-color-scheme: dark)").matches);
+    root.setAttribute("data-theme", dark ? "light" : "dark");
+    syncBtn();
+    renderAll();
+  });
+  matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => { syncBtn(); renderAll(); });
+  syncBtn();
+
+  function tooltip(container){
+    const t = document.createElement("div");
+    t.className = "tooltip";
+    container.appendChild(t);
+    return {
+      show(x,y,html){ t.innerHTML = html; t.style.left = x+"px"; t.style.top = y+"px"; t.classList.add("show"); },
+      hide(){ t.classList.remove("show"); }
+    };
+  }
+
+  // ---------- Chart A: revenue line + spend bars ----------
+  function renderA(){
+    const host = document.getElementById("chartA");
+    if(!host) return;
+    host.innerHTML = "";
+    const compact = host.clientWidth < 560;
+    const W = compact ? 430 : 760;
+    const H = compact ? 300 : 330;
+    const m = compact ? {t:34,r:12,b:38,l:44} : {t:34,r:18,b:46,l:58};
+    const iw=W-m.l-m.r, ih=H-m.t-m.b;
+    const rows = S.store_monthly.filter(d=>d.month>="2026-05");
+    const yMax=22000, ticks=[0,5000,10000,15000,20000];
+    const x = i => m.l + (iw/rows.length)*i + (iw/rows.length)/2;
+    const y = v => m.t + ih - (v/yMax)*ih;
+
+    const svg = el("svg",{viewBox:`0 0 ${W} ${H}`, role:"img", "aria-label":"Store revenue and blended ad spend by month, May to October 2026"});
+
+    // grid + y labels
+    ticks.forEach(v=>{
+      svg.appendChild(el("line",{x1:m.l,x2:W-m.r,y1:y(v),y2:y(v),stroke:css("--chart-grid"),"stroke-width":1}));
+      const t=el("text",{x:m.l-8,y:y(v)+4,"text-anchor":"end","font-size":compact?9.5:11,fill:css("--ink-3"),"font-family":"Inter"});
+      t.textContent = v===0?"0":(v/1000)+"k";
+      svg.appendChild(t);
+    });
+
+    // spend bars
+    const bw = Math.min(compact?18:24, (iw/rows.length)*0.3);
+    rows.forEach((d,i)=>{
+      const h = (d.spend/yMax)*ih;
+      const bx = x(i)-bw/2, by = m.t+ih-h, r=4;
+      const path = `M${bx},${by+r} Q${bx},${by} ${bx+r},${by} L${bx+bw-r},${by} Q${bx+bw},${by} ${bx+bw},${by+r} L${bx+bw},${m.t+ih} L${bx},${m.t+ih} Z`;
+      svg.appendChild(el("path",{d:path,fill:css("--series-2"),opacity:.92}));
+    });
+
+    // revenue area + line
+    const pts = rows.map((d,i)=>[x(i), y(d.sales)]);
+    const area = `M${pts[0][0]},${m.t+ih} ` + pts.map(p=>`L${p[0]},${p[1]}`).join(" ") + ` L${pts[pts.length-1][0]},${m.t+ih} Z`;
+    svg.appendChild(el("path",{d:area,fill:css("--series-1"),opacity:.08}));
+    svg.appendChild(el("path",{d:pts.map((p,i)=>(i?"L":"M")+p[0]+","+p[1]).join(" "),fill:"none",stroke:css("--series-1"),"stroke-width":2,"stroke-linejoin":"round","stroke-linecap":"round"}));
+
+    // dots + x labels
+    rows.forEach((d,i)=>{
+      const cx=x(i), cy=y(d.sales);
+      svg.appendChild(el("circle",{cx,cy,r:4.5,fill:css("--series-1"),stroke:css("--card"),"stroke-width":2}));
+      const t=el("text",{x:cx,y:H-14,"text-anchor":"middle","font-size":compact?9.5:11.5,fill:css("--ink-3"),"font-family":"Inter"});
+      t.textContent=d.label;
+      svg.appendChild(t);
+    });
+
+    // selective direct labels: June + October
+    const labelIdx = [1, rows.length-1];
+    labelIdx.forEach(i=>{
+      const d=rows[i], cx=x(i), cy=y(d.sales);
+      const t=el("text",{x:cx,y:cy-14,"text-anchor":"middle","font-size":compact?11:12.5,"font-weight":600,fill:css("--ink"),"font-family":"Inter"});
+      t.textContent=money(d.sales)+(i===rows.length-1?"*":"");
+      svg.appendChild(t);
+      const st=el("text",{x:cx,y:y(d.spend)-8,"text-anchor":"middle","font-size":compact?9.5:11,fill:css("--ink-2"),"font-family":"Inter"});
+      st.textContent=money(d.spend);
+      svg.appendChild(st);
+    });
+
+    host.appendChild(svg);
+    const tip = tooltip(host);
+    rows.forEach((d,i)=>{
+      const bwid = iw/rows.length;
+      const rect=el("rect",{x:m.l+bwid*i,y:m.t,width:bwid,height:ih,fill:"transparent",style:"cursor:default"});
+      rect.addEventListener("mousemove", ev=>{
+        const box=host.getBoundingClientRect();
+        const px=(ev.clientX-box.left);
+        const py=(ev.clientY-box.top);
+        tip.show(px,py,`<b>${d.label.replace("*","")}</b><br>Revenue ${money(d.sales)}<br>Spend ${money(d.spend)}<br>ROAS ${d.roas}`);
+      });
+      rect.addEventListener("mouseleave",()=>tip.hide());
+      svg.appendChild(rect);
+    });
+  }
+
+  // ---------- Chart B: channel change (columns) ----------
+  function renderB(){
+    const host = document.getElementById("chartB");
+    if(!host) return;
+    host.innerHTML="";
+    const rows = S.channels.map(c=>({name:c.name, delta:c.oct-c.june, june:c.june, oct:c.oct}))
+      .sort((a,b)=>a.delta-b.delta);
+    const compact = host.clientWidth < 560;
+    const short = compact
+      ? {"Organic & social":"Organic","Non-attributed":"Non-att."}
+      : {"Organic & social":"Organic"};
+    const W=compact?430:760, H=compact?300:330;
+    const m=compact?{t:22,r:10,b:48,l:42}:{t:26,r:18,b:56,l:56};
+    const iw=W-m.l-m.r, ih=H-m.t-m.b;
+    const band=iw/rows.length;
+    const min=-5600, max=700;
+    const y = v => m.t + ((max-v)/(max-min))*ih;
+    const zero=y(0);
+    const svg=el("svg",{viewBox:`0 0 ${W} ${H}`,role:"img","aria-label":"Change in attributed revenue by channel, June to October"});
+
+    [-5000,-2500,0].forEach(v=>{
+      svg.appendChild(el("line",{x1:m.l,x2:W-m.r,y1:y(v),y2:y(v),stroke:css("--chart-grid"),"stroke-width":1}));
+      const t=el("text",{x:m.l-8,y:y(v)+4,"text-anchor":"end","font-size":compact?9:11,fill:css("--ink-3"),"font-family":"Inter"});
+      t.textContent = v===0?"0":(v<0?"−£":"£")+Math.abs(v)/1000+"k";
+      svg.appendChild(t);
+    });
+
+    rows.forEach((d,i)=>{
+      const cx=m.l+band*i+band/2;
+      const bw=Math.min(compact?20:24, band*0.34);
+      const yv=y(d.delta), top=Math.min(yv,zero), h=Math.abs(yv-zero), rr=4;
+      // rounded data-end, square at the zero baseline
+      let path;
+      if(d.delta<0){
+        path=`M${cx-bw/2},${zero} L${cx-bw/2},${top+h-rr} Q${cx-bw/2},${top+h} ${cx-bw/2+rr},${top+h} L${cx+bw/2-rr},${top+h} Q${cx+bw/2},${top+h} ${cx+bw/2},${top+h-rr} L${cx+bw/2},${zero} Z`;
+      } else {
+        path=`M${cx-bw/2},${zero} L${cx-bw/2},${top+rr} Q${cx-bw/2},${top} ${cx-bw/2+rr},${top} L${cx+bw/2-rr},${top} Q${cx+bw/2},${top} ${cx+bw/2},${top+rr} L${cx+bw/2},${zero} Z`;
+      }
+      svg.appendChild(el("path",{d:path,fill:css("--series-1"),opacity:.92}));
+
+      const val=el("text",{x:cx,y: d.delta<0 ? top+h+16 : top-9,"text-anchor":"middle","font-size":compact?10:12.5,"font-weight":600,fill:css("--ink"),"font-family":"Inter"});
+      val.textContent=(d.delta<0?"−":"+")+money(Math.abs(d.delta));
+      svg.appendChild(val);
+
+      const nm=el("text",{x:cx,y:H-20,"text-anchor":"middle","font-size":compact?9.5:11.5,fill:css("--ink-3"),"font-family":"Inter"});
+      nm.textContent=short[d.name]||d.name;
+      svg.appendChild(nm);
+
+      const hit=el("rect",{x:m.l+band*i,y:m.t,width:band,height:ih,fill:"transparent"});
+      hit.addEventListener("mousemove", ev=>{
+        const box=host.getBoundingClientRect();
+        tip.show(ev.clientX-box.left, ev.clientY-box.top,
+          `<b>${d.name}</b><br>June ${money(d.june)}<br>October ${money(d.oct)}<br>${pct((d.oct/d.june-1)*100,1)}`);
+      });
+      hit.addEventListener("mouseleave",()=>tip.hide());
+      svg.appendChild(hit);
+    });
+
+    host.appendChild(svg);
+    var tip = tooltip(host);
+  }
+
+  function renderSeries(){
+    const tbody=document.getElementById("seriesBody");
+    if(!tbody) return;
+    const meta={}; S.meta_monthly.forEach(m=>meta[m.month]=m);
+    tbody.innerHTML = S.store_monthly.filter(d=>d.month>="2026-05").map(d=>{
+      const mm=meta[d.month]||{};
+      return `<tr><td>${d.label.replace("*","")}</td><td>${money(d.sales)}</td><td>${money(d.spend)}</td><td>${d.roas.toFixed(2)}</td><td>${mm.spend?money(mm.spend):"—"}</td><td>${mm.revenue?money(mm.revenue):"—"}</td><td>${mm.roas?mm.roas.toFixed(2):"—"}</td></tr>`;
+    }).join("");
+  }
+
+  function renderAll(){ renderA(); renderB(); }
+  renderAll();
+  renderSeries();
+  let rz;
+  window.addEventListener("resize",()=>{ clearTimeout(rz); rz=setTimeout(renderAll,180); });
+})();
+</script>
+</body>
+</html>
